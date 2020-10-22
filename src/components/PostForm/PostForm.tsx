@@ -1,24 +1,30 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { ActionType, PostType } from "../types/types";
 
-const PostForm = () => {
-  const [title, setTitle] = useState();
-  const [text, setText] = useState();
-  const dispatch = useDispatch();
+const PostForm: React.FC = () => {
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
+  const dispatch: React.Dispatch<ActionType> = useDispatch();
 
-  const handleChange = (e, set) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
+    set: React.Dispatch<React.SetStateAction<string>>
+  ) => {
     set(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = {
-      id: new Date(),
+    const data: PostType = {
+      id: new Date().toString(),
       title,
       message: text,
       editing: false,
     };
-    dispatch({ type: "ADD_POST", data });
+    dispatch({ type: "ADD_POST", newData: data });
     setTitle("");
     setText("");
   };
@@ -38,8 +44,8 @@ const PostForm = () => {
         <br />
         <textarea
           required
-          cols="28"
-          rows="5"
+          cols={28}
+          rows={5}
           placeholder="Enter Post Text"
           value={text}
           onChange={(e) => handleChange(e, setText)}

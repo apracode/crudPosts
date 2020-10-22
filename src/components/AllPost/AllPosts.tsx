@@ -2,14 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Post from "../Post/Post";
 import EditComponent from "../Edit/EditComponent";
+import { PostType, StateType } from "../types/types";
 
-const AllPosts = () => {
-  const posts = useSelector((state) => state);
+const AllPosts: React.FC = () => {
+  const posts = useSelector((state: StateType) => state);
   return (
     <div className="allPosts">
       <h1>All Posts</h1>
       {posts
-        ? posts.map((post) => (
+        ? posts.map((post: PostType) => (
             <div key={post.id}>
               {post.editing ? (
                 <EditComponent post={post} key={post.id} />

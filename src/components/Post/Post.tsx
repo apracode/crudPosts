@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { ActionType, IPost } from "../types/types";
 
-const Post = ({ post }) => {
-  const dispatch = useDispatch();
+const Post: React.FC<IPost> = ({ post }) => {
+  const dispatch = useDispatch<React.Dispatch<ActionType>>();
   const { title, message, id } = post;
   return (
     <div className="post">

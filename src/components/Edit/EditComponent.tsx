@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { ActionType, IPost } from "../types/types";
 
-const EditComponent = ({ post }) => {
-  const [title, setTitle] = useState(post.title);
-  const [text, setText] = useState(post.message);
+const EditComponent: React.FC<IPost> = ({ post }) => {
+  const [title, setTitle] = useState<string | undefined>(post.title);
+  const [text, setText] = useState<string | undefined>(post.message);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<React.Dispatch<ActionType>>();
 
-  const handleChange = (e, set) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
+    set: React.Dispatch<React.SetStateAction<string | undefined>>
+  ) => {
     set(e.target.value);
   };
 
@@ -15,7 +21,7 @@ const EditComponent = ({ post }) => {
     dispatch({
       type: "UPDATE",
       id: post.id,
-      data: { newTitle: title, newMessage: text },
+      updateData: { newTitle: title, newMessage: text },
     });
 
   return (
@@ -32,8 +38,8 @@ const EditComponent = ({ post }) => {
         <br />
         <textarea
           required
-          rows="5"
-          cols="28"
+          rows={5}
+          cols={28}
           placeholder="Enter Post"
           onChange={(e) => handleChange(e, setText)}
           value={text}
