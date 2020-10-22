@@ -22,3 +22,8 @@ export interface IPost {
   key?: string;
   post: PostType;
 }
+
+export type ValuesType = {
+  title?: string;
+  message?: string;
+};

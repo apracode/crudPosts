@@ -39,9 +39,12 @@ h2 {
   color: white;
 }
 .createForm {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 50%;
   margin: 3% auto;
+  justify-content: space-between;
+  height: 30vh;
 }
 .createForm > input,
 .createForm > textarea,
@@ -61,6 +64,7 @@ button {
 .postBut {
   margin: 0 auto;
   display: block;
+  margin-top: 20px;
 }
 .post {
   border: 2px solid white;

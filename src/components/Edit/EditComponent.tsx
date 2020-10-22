@@ -1,55 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { ActionType, IPost } from "../types/types";
+import { useForm } from "../hooks/useForm";
+import { ActionType, IPost, ValuesType } from "../types/types";
 
 const EditComponent: React.FC<IPost> = ({ post }) => {
-  const [title, setTitle] = useState<string | undefined>(post.title);
-  const [text, setText] = useState<string | undefined>(post.message);
-
   const dispatch = useDispatch<React.Dispatch<ActionType>>();
 
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-    set: React.Dispatch<React.SetStateAction<string | undefined>>
-  ) => {
-    set(e.target.value);
-  };
-
-  const handleSubmit = () =>
+  const onFormSubmit = (values: ValuesType) =>
     dispatch({
       type: "UPDATE",
       id: post.id,
-      updateData: { newTitle: title, newMessage: text },
+      updateData: { newTitle: values.title, newMessage: values.message },
     });
 
-  return (
-    <div className="updatePost">
-      <form className="updateForm" onSubmit={handleSubmit}>
-        <input
-          required
-          type="text"
-          placeholder="Enter Post Title"
-          value={title}
-          onChange={(e) => handleChange(e, setTitle)}
-        />
-        <br />
-        <br />
-        <textarea
-          required
-          rows={5}
-          cols={28}
-          placeholder="Enter Post"
-          onChange={(e) => handleChange(e, setText)}
-          value={text}
-        />
-        <br />
-        <br />
-        <button>Update</button>
-      </form>
-    </div>
+  const [Form] = useForm(
+    { title: post.title, message: post.message },
+    onFormSubmit,
+    "Update"
   );
+
+  return <div className="updatePost">{Form}</div>;
 };
 
 export default EditComponent;

@@ -1,59 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { ActionType, PostType } from "../types/types";
+
+import { ActionType, PostType, ValuesType } from "../types/types";
+import { useForm } from "../hooks/useForm";
 
 const PostForm: React.FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
   const dispatch: React.Dispatch<ActionType> = useDispatch();
 
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-    set: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    set(e.target.value);
-  };
-
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onFormSubmit = (values: ValuesType) => {
     const data: PostType = {
       id: new Date().toString(),
-      title,
-      message: text,
+      title: values.title,
+      message: values.message,
       editing: false,
     };
     dispatch({ type: "ADD_POST", newData: data });
-    setTitle("");
-    setText("");
   };
+  const [Form] = useForm({ title: "", message: "" }, onFormSubmit, "Post");
 
   return (
     <div className="createPost">
       <h1>Create Post</h1>
-      <form className="createForm" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          required
-          placeholder="Enter Post Title"
-          value={title}
-          onChange={(e) => handleChange(e, setTitle)}
-        />
-        <br />
-        <br />
-        <textarea
-          required
-          cols={28}
-          rows={5}
-          placeholder="Enter Post Text"
-          value={text}
-          onChange={(e) => handleChange(e, setText)}
-        ></textarea>
-        <br />
-        <br />
-        <button className="postBut">Post</button>
-      </form>
+      {Form}
     </div>
   );
 };
