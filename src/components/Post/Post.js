@@ -1,34 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-// 
-// 
-class Post extends Component {
-    
-  render() {
-    return (
-      <div className="post">
-        <h2>{this.props.post.title}</h2>
-        <p>{this.props.post.message}</p>
-        
-        <button
-          onClick={() =>
-            this.props.dispatch({
-              type: "EDIT_POST",
-              id: this.props.post.id
-            })
-          }
-        >
-          Edit
-        </button>
-        <button
-          onClick={() =>
-            this.props.dispatch({ type: "DELETE_POST", id: this.props.post.id })
-          }
-        >
-          Delete
-        </button>
-      </div>
-    );
-  }
-}
-export default connect()(Post);
+import React from "react";
+import { useDispatch } from "react-redux";
+
+const Post = ({ post }) => {
+  const dispatch = useDispatch();
+  const { title, message, id } = post;
+  return (
+    <div className="post">
+      <h2>{title}</h2>
+      <p>{message}</p>
+      <button onClick={() => dispatch({ type: "EDIT_POST", id })}>Edit</button>
+      <button onClick={() => dispatch({ type: "DELETE_POST", id })}>
+        Delete
+      </button>
+    </div>
+  );
+};
+
+export default Post;

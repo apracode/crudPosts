@@ -1,57 +1,55 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
-class PostForm extends Component {
-  handleSubmit = e => {
+const PostForm = () => {
+  const [title, setTitle] = useState();
+  const [text, setText] = useState();
+  const dispatch = useDispatch();
+
+  const handleChange = (e, set) => {
+    set(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const title = this.getTitle.value;
-    const message = this.getMessage.value;
-
     const data = {
       id: new Date(),
       title,
-      message,
-      editing: false
+      message: text,
+      editing: false,
     };
-    this.props.dispatch({
-      type: "ADD_POST",
-      data
-    });
-    this.getTitle.value = "";
-    this.getMessage.value = "";
+    dispatch({ type: "ADD_POST", data });
+    setTitle("");
+    setText("");
   };
-  render() {
-    return (
-      <div className="createPost">
-        <h1>Create Post</h1>
-        <form
-          className="createForm"
-          action=""
-          onSubmit={ this.handleSubmit}
-        >
-          <input
-            type="text"
-            ref={input => (this.getTitle = input)}
-            required
-            placeholder="Enter Post Title"
-          />
-          <br />
-          <br />
-          <textarea
-            ref={input => (this.getMessage = input)}
-            id=""
-            required
-            cols="28"
-            rows="5"
-            placeholder="Enter Post Text"
-          ></textarea>
-          <br />
-          <br />
-          <button className="postBut">Post</button>
-        </form>
-      </div>
-    );
-  }
-}
 
-export default connect()(PostForm);
+  return (
+    <div className="createPost">
+      <h1>Create Post</h1>
+      <form className="createForm" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          required
+          placeholder="Enter Post Title"
+          value={title}
+          onChange={(e) => handleChange(e, setTitle)}
+        />
+        <br />
+        <br />
+        <textarea
+          required
+          cols="28"
+          rows="5"
+          placeholder="Enter Post Text"
+          value={text}
+          onChange={(e) => handleChange(e, setText)}
+        ></textarea>
+        <br />
+        <br />
+        <button className="postBut">Post</button>
+      </form>
+    </div>
+  );
+};
+
+export default PostForm;
